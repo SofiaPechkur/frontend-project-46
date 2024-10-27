@@ -1,5 +1,6 @@
 import _ from 'lodash';
+import parse from './parse.js';
 
-export default () => {
- //console.log(333333)
+export default (pathResolveOne, pathResolveTwo) => {
+    return parse(pathResolveOne, pathResolveTwo);
 };

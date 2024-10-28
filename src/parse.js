@@ -1,10 +1,9 @@
-
 import { readFileSync } from 'node:fs';
 
-export default (pathResolveOne, pathResolveTwo) => {
-    const pathFileOne = readFileSync(pathResolveOne); // в конст содержимое файла
-    const pathFileTwo = readFileSync(pathResolveTwo);
-    const objFileOne = JSON.parse(pathFileOne); // из json в js
-    const objFileTwo = JSON.parse(pathFileTwo);
-    return [objFileOne, objFileTwo];
+export default (filepathResolveOne, filepathResolveTwo) => {
+  const contentFileOne = readFileSync(filepathResolveOne); // в конст содержимое файла
+  const contentFileTwo = readFileSync(filepathResolveTwo);
+  const objContentFileOne = JSON.parse(contentFileOne); // из json в js
+  const objContentFileTwo = JSON.parse(contentFileTwo);
+  return [objContentFileOne, objContentFileTwo];
 };

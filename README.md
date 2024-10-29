@@ -1,5 +1,6 @@
 ### ?????????????????????:
 [![Actions Status](https://github.com/SofiaPechkur/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/SofiaPechkur/frontend-project-46/actions)
+[![show-directory](https://github.com/SofiaPechkur/frontend-project-46/actions/workflows/githubactiontest.yml/badge.svg)](https://github.com/SofiaPechkur/frontend-project-46/actions/workflows/githubactiontest.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/68949f69fd3413a06235/maintainability)](https://codeclimate.com/github/SofiaPechkur/frontend-project-46/maintainability)
 ## Setup
 ```bash

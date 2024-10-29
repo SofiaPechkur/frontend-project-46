@@ -1,4 +1,4 @@
-name: show-directory
+name: tests & lint
 # on – определяет события, которые запускают воркфлоу
 on: push
 jobs:
@@ -11,6 +11,20 @@ jobs:
       # экшен — выполняет какую-то задачу
       # checkout — клонирует репозиторий
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
       # run – произвольная bash-команда
-      # ls -la выведет содержимое текущего репозитория
-      - run: make githubactiontest
+      - run: make install
+      - run: make test
+      - run: make lint
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v5.0.0
+        # Add Code Climate secret key
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
+
+# name: CC_TEST_REPORTER_ID (пометка по test coverage)

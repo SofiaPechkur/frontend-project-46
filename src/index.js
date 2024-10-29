@@ -3,7 +3,7 @@ import path from 'path';
 import { cwd } from 'node:process';
 import parse from './parse.js';
 
-export default (filepathOriginalOne, filepathOriginalTwo) => {
+const getDiff = (filepathOriginalOne, filepathOriginalTwo) => { // разница файлов
   const pathCwd = cwd(); // путь от корня операционки до текущей рабочей директории
   // преобразование в абсолют путь
   const filepathResolveOne = path.resolve(pathCwd, filepathOriginalOne);
@@ -39,3 +39,13 @@ export default (filepathOriginalOne, filepathOriginalTwo) => {
   }, {});
   return objDifference;
 };
+const getStringFromObj = (filepathOriginalOne, filepathOriginalTwo) => { // из объекта в строку
+  const obj = getDiff(filepathOriginalOne, filepathOriginalTwo); // получили объект
+  const arr = Object.entries(obj); // получили массив
+  const str = arr.reduce((acc, element) => { // получили результат строкой
+    const newAcc = `${acc}${element[0]}: ${element[1]},\n`;
+    return newAcc;
+  }, '');
+  return `{\n${str}}`;
+};
+export default getStringFromObj; // она же genDiff!!!

@@ -10,4 +10,6 @@ test:
 		npm test
 test-coverage:
 		npm test -- --coverage
+githubactiontest:
+		node zzz.js
 . PHONY: test

@@ -12,8 +12,8 @@ program
   .option('-f, --format [type]', 'output format')
   .helpOption('-h, --help', 'output usage information')
   .action(() => {
-    const filepathOriginalOne = '__fixtures__/file1.json'; // типа переданный путь до файла
-    const filepathOriginalTwo = '__fixtures__/file2.json';
+    const filepathOriginalOne = '__fixtures__/file1.yml'; // типа переданный путь до файла
+    const filepathOriginalTwo = '__fixtures__/file2.yml';
     console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
   });
 

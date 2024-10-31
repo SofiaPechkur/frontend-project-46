@@ -12,9 +12,10 @@ program
   .option('-f, --format [type]', 'output format')
   .helpOption('-h, --help', 'output usage information')
   .action(() => {
-    const filepathOriginalOne = '__fixtures__/file1.yml'; // типа переданный путь до файла
-    const filepathOriginalTwo = '__fixtures__/file2.yml';
-    console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
+    const filepathOriginalOne = '__fixtures__/file1.json'; // типа переданный путь до файла
+    const filepathOriginalTwo = '__fixtures__/file2.json';
+    //console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
+    console.log(JSON.stringify(genDiff(filepathOriginalOne, filepathOriginalTwo), null, 2));
   });
 
 program.parse();

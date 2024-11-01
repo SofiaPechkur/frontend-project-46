@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import path from 'path';
 import { cwd } from 'node:process';
+import getFormatStylish from './stylish.js';
 import parse from './parse.js';
 
 // получаем контент из файлов
@@ -28,57 +29,39 @@ const getDiff = (objContentFileOne, objContentFileTwo) => { // разница ф
       return {
         name: key,
         type: 'addedObjOne',
-        value: objContentFileOne[key]
+        value: objContentFileOne[key],
       };
       // уник ключ встречается в ключах 2 объекта, в первом нет
-    } else if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
+    } if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
       return {
         name: key,
         type: 'addedObjTwo',
-        value: objContentFileTwo[key]
+        value: objContentFileTwo[key],
       };
       // уник ключ встречается и в первом и во втором, значения объекты
-    } else if (objContentFileOne[key] instanceof Object && objContentFileTwo[key] instanceof Object) {
+    } if (objContentFileOne[key] instanceof Object && objContentFileTwo[key] instanceof Object) {
       return {
         name: key,
-        type: 'object',
-        children: getDiff(objContentFileOne[key], objContentFileTwo[key])
+        type: 'identicalKeyWithValObject',
+        children: getDiff(objContentFileOne[key], objContentFileTwo[key]),
       };
       // уник ключ встречается и в первом и во втором, значения одинаковые, значения не объект
-    } else if (objContentFileOne[key] === objContentFileTwo[key]) {
+    } if (objContentFileOne[key] === objContentFileTwo[key]) {
       return {
         name: key,
-        type: 'staySame',
-        value: objContentFileOne[key]
+        type: 'identicalKeyValStaySame',
+        value: objContentFileOne[key],
       };
       // уник ключ встречается и в первом и во втором, значения разные, значения не объект
-    } else if (objContentFileOne[key] !== objContentFileTwo[key]) {
+    } if (objContentFileOne[key] !== objContentFileTwo[key]) {
       return {
         name: key,
-        type: 'different',
+        type: 'identicalKeyValDifferent',
         valueObjOne: objContentFileOne[key],
-        valueObjTwo: objContentFileTwo[key]
+        valueObjTwo: objContentFileTwo[key],
       };
-    };
+    }
   });
-
-      // // уник ключ встречается в ключах 1 объекта, во втором нет
-    // if (keysObjContentFileOne.includes(key) && !keysObjContentFileTwo.includes(key)) {
-    //   acc[`- ${key}`] = objContentFileOne[key];
-    //   // уник ключ встречается в ключах 2 объекта, в первом нет
-    // } else if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
-    //   acc[`+ ${key}`] = objContentFileTwo[key];
-    //   // уник ключ встречается и в первом и во втором
-    // } else if (keysObjContentFileOne.includes(key) && keysObjContentFileTwo.includes(key)) {
-    //   // если значения ключа из первого и второго объектов совпадают
-    //   if (objContentFileOne[key] === objContentFileTwo[key]) {
-    //     acc[`  ${key}`] = objContentFileTwo[key];
-    //   } else {
-    //     acc[`- ${key}`] = objContentFileOne[key];
-    //     acc[`+ ${key}`] = objContentFileTwo[key];
-    //   }
-    // }
-    
   return treeDifference;
 };
 export default (filepathOriginalOne, filepathOriginalTwo) => { // general function (вызывается в gendiff.js)
@@ -86,14 +69,7 @@ export default (filepathOriginalOne, filepathOriginalTwo) => { // general functi
   const [objContentFileOne, objContentFileTwo] = getContentFile(filepathOriginalOne, filepathOriginalTwo);
   // получили разницу файлов в виде дерева
   const treeDiff = getDiff(objContentFileOne, objContentFileTwo);
-  return treeDiff;
+  // получили вывод в формате stylish
+  const formatStylish = getFormatStylish(treeDiff);
+  return formatStylish;
 };
-// const getStringFromObj = (filepathOriginalOne, filepathOriginalTwo) => { // из объекта в строку
-//   const obj = getDiff(filepathOriginalOne, filepathOriginalTwo); // получили объект
-//   const arr = Object.entries(obj); // получили массив
-//   const str = arr.reduce((acc, element) => { // получили результат строкой
-//     const newAcc = `${acc}${element[0]}: ${element[1]},\n`;
-//     return newAcc;
-//   }, '');
-//   return `{\n${str}}`;
-// };

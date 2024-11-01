@@ -14,8 +14,8 @@ program
   .action(() => {
     const filepathOriginalOne = '__fixtures__/file1.json'; // типа переданный путь до файла
     const filepathOriginalTwo = '__fixtures__/file2.json';
-    //console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
-    console.log(JSON.stringify(genDiff(filepathOriginalOne, filepathOriginalTwo), null, 2));
+    console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
+    // console.log(JSON.stringify(genDiff(filepathOriginalOne, filepathOriginalTwo), null, 2));
   });
 
 program.parse();

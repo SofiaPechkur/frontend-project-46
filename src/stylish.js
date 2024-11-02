@@ -1,33 +1,43 @@
-const getCorrectValue = (value) => { // переделываем значение из объекта в строку
+// считаем кол-во отступов, смещение по умолчанию 2
+const getQuantityIndent = (depth, displacement = 2) => {
+  const newDepth = depth; // глубина
+  const basicQuantityIndent = 4; // базовое кол-во отступов
+  // финальное кол-во отступов, в случае если value === объект => displacement = 0
+  const quantityIndent = (newDepth * basicQuantityIndent) - displacement;
+  return quantityIndent; // возвращается кол-во отступов
+};
+const getCorrectValue = (value, indent, depth) => { // переделываем значение из объекта в строку
   if (value instanceof Object) { // проверка - если объект
     const entries = Object.entries(value); // то из объекта в массив для reduce
     const newKeyValue = entries.reduce((acc, keyValue) => { // в конст ключ и значение
-      // каждый раз проверяем keyValue на объект
-      acc = `${acc}\n${keyValue[0]}: ${getCorrectValue(keyValue[1])}`;
-      return acc;
+      // каждый раз проверяем keyValue на объект, indent равен 1 пробелу
+      const newAcc = `${acc}\n${indent.repeat(getQuantityIndent(depth, 0))}${keyValue[0]}: ${getCorrectValue(keyValue[1], indent, depth + 1)}`;
+      return newAcc;
     }, '');
-    return newKeyValue; // возвращается ключ и значение
+    return `{${newKeyValue}\n${indent.repeat(getQuantityIndent(depth - 1, 0))}}`; // возвращается ключ и значение
   }
   return value; // возвращается значение
 };
-const getFormatStylish = (treeDiff) => { // получаем нужный формат вывода
+const getFormatStylish = (treeDiff, depth = 1) => { // получаем нужный формат вывода
+  const indent = ' '; // тип отступа
   const formatStylish = treeDiff.reduce((acc, key) => { // key включает name, type, value
     if (key.type === 'addedObjOne') {
       // value проверяется на объект
-      acc = `${acc}\n- ${key.name}: ${getCorrectValue(key.value)}`;
-    } else if (key.type === 'addedObjTwo') {
-      acc = `${acc}\n+ ${key.name}: ${getCorrectValue(key.value)}`;
-      // есть дети, идем рекурсией
-    } else if (key.type === 'identicalKeyWithValObject') {
-      acc = `${acc}\n  ${key.name}: ${getFormatStylish(key.children)}`;
-    } else if (key.type === 'identicalKeyValStaySame') {
-      acc = `${acc}\n  ${key.name}: ${getCorrectValue(key.value)}`;
-    } else if (key.type === 'identicalKeyValDifferent') { //
-      acc = `${acc}\n- ${key.name}: ${getCorrectValue(key.valueObjOne)}
-+ ${key.name}: ${getCorrectValue(key.valueObjTwo)}`;
+      return `${acc}\n${indent.repeat(getQuantityIndent(depth))}- ${key.name}: ${getCorrectValue(key.value, indent, depth + 1)}`;
     }
-    return acc;
+    if (key.type === 'addedObjTwo') {
+      return `${acc}\n${indent.repeat(getQuantityIndent(depth))}+ ${key.name}: ${getCorrectValue(key.value, indent, depth + 1)}`;
+    } // есть дети, идем рекурсией
+    if (key.type === 'identicalKeyWithValObject') {
+      return `${acc}\n${indent.repeat(getQuantityIndent(depth))}  ${key.name}: ${getFormatStylish(key.children, depth + 1)}`;
+    }
+    if (key.type === 'identicalKeyValStaySame') {
+      return `${acc}\n${indent.repeat(getQuantityIndent(depth))}  ${key.name}: ${getCorrectValue(key.value, indent, depth + 1)}`;
+    }
+    // else if (key.type === 'identicalKeyValDifferent')
+    return `${acc}\n${indent.repeat(getQuantityIndent(depth))}- ${key.name}: ${getCorrectValue(key.valueObjOne, indent, depth + 1)}
+${indent.repeat(getQuantityIndent(depth))}+ ${key.name}: ${getCorrectValue(key.valueObjTwo, indent, depth + 1)}`;
   }, '');
-  return formatStylish;
+  return `{${formatStylish}\n${indent.repeat(getQuantityIndent(depth - 1, 0))}}`;
 };
 export default getFormatStylish;

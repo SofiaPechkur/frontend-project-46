@@ -31,45 +31,48 @@ const getDiff = (objContentFileOne, objContentFileTwo) => { // разница ф
         type: 'addedObjOne',
         value: objContentFileOne[key],
       };
-      // уник ключ встречается в ключах 2 объекта, в первом нет
-    } if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
+    } // уник ключ встречается в ключах 2 объекта, в первом нет
+    if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
       return {
         name: key,
         type: 'addedObjTwo',
         value: objContentFileTwo[key],
       };
-      // уник ключ встречается и в первом и во втором, значения объекты
-    } if (objContentFileOne[key] instanceof Object && objContentFileTwo[key] instanceof Object) {
+    } // уник ключ встречается и в первом и во втором, значения объекты
+    if (objContentFileOne[key] instanceof Object && objContentFileTwo[key] instanceof Object) {
       return {
         name: key,
         type: 'identicalKeyWithValObject',
         children: getDiff(objContentFileOne[key], objContentFileTwo[key]),
       };
-      // уник ключ встречается и в первом и во втором, значения одинаковые, значения не объект
-    } if (objContentFileOne[key] === objContentFileTwo[key]) {
+    } // уник ключ встречается и в первом и во втором, значения одинаковые, значения не объект
+    if (objContentFileOne[key] === objContentFileTwo[key]) {
       return {
         name: key,
         type: 'identicalKeyValStaySame',
         value: objContentFileOne[key],
       };
-      // уник ключ встречается и в первом и во втором, значения разные, значения не объект
-    } if (objContentFileOne[key] !== objContentFileTwo[key]) {
-      return {
-        name: key,
-        type: 'identicalKeyValDifferent',
-        valueObjOne: objContentFileOne[key],
-        valueObjTwo: objContentFileTwo[key],
-      };
     }
+    // уник ключ встречается и в первом и во втором, значения разные, значения не объект
+    return {
+      name: key,
+      type: 'identicalKeyValDifferent',
+      valueObjOne: objContentFileOne[key],
+      valueObjTwo: objContentFileTwo[key],
+    };
   });
   return treeDifference;
 };
-export default (filepathOriginalOne, filepathOriginalTwo) => { // general function (вызывается в gendiff.js)
+// general function (вызывается в gendiff.js)
+export default (filepathOriginalOne, filepathOriginalTwo, format = 'formatStylish') => {
   // получили контент из файлов
-  const [objContentFileOne, objContentFileTwo] = getContentFile(filepathOriginalOne, filepathOriginalTwo);
+  const [objContFileOne, objContFileTwo] = getContentFile(filepathOriginalOne, filepathOriginalTwo);
   // получили разницу файлов в виде дерева
-  const treeDiff = getDiff(objContentFileOne, objContentFileTwo);
+  const treeDiff = getDiff(objContFileOne, objContFileTwo);
+  if (format === 'formatStylish') {
   // получили вывод в формате stylish
-  const formatStylish = getFormatStylish(treeDiff);
-  return formatStylish;
+    const formatStylish = getFormatStylish(treeDiff);
+    return formatStylish;
+  }
+  return null;
 };

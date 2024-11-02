@@ -9,7 +9,7 @@ program
   .argument('<filepath2>')
   .description('Compares two configuration files and shows a difference.')
   .version('output the version number')
-  .option('-f, --format [type]', 'output format')
+  .option('-f, --format [type]', 'output format', 'stylish')
   .helpOption('-h, --help', 'output usage information')
   .action(() => {
     const filepathOriginalOne = '__fixtures__/file1.json'; // типа переданный путь до файла

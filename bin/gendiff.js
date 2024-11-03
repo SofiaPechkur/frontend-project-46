@@ -12,10 +12,10 @@ program
   .option('-f, --format [type]', 'output format', 'stylish')
   .helpOption('-h, --help', 'output usage information')
   .action(() => {
-    const filepathOriginalOne = '__fixtures__/file1.json'; // типа переданный путь до файла
-    const filepathOriginalTwo = '__fixtures__/file2.json';
-    console.log(genDiff(filepathOriginalOne, filepathOriginalTwo));
-    // console.log(JSON.stringify(genDiff(filepathOriginalOne, filepathOriginalTwo), null, 2));
+    const opts = program.opts();
+    console.log(genDiff(program.args[0], program.args[1], opts.format));
   });
 
 program.parse();
+// gendiff __fixtures__/file1.json __fixtures__/file2.json => stylish
+// gendiff --format plain __fixtures__/file1.json __fixtures__/file2.json => plain

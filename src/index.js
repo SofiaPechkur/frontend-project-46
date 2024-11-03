@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import path from 'path';
 import { cwd } from 'node:process';
-import getFormatStylish from './stylish.js';
+import chooseFormat from './formatters/index.js';
 import parse from './parse.js';
 
 // получаем контент из файлов
@@ -64,15 +64,11 @@ const getDiff = (objContentFileOne, objContentFileTwo) => { // разница ф
   return treeDifference;
 };
 // general function (вызывается в gendiff.js)
-export default (filepathOriginalOne, filepathOriginalTwo, format = 'formatStylish') => {
+export default (filepathOriginalOne, filepathOriginalTwo, format = 'stylish') => {
   // получили контент из файлов
   const [objContFileOne, objContFileTwo] = getContentFile(filepathOriginalOne, filepathOriginalTwo);
   // получили разницу файлов в виде дерева
   const treeDiff = getDiff(objContFileOne, objContFileTwo);
-  if (format === 'formatStylish') {
-  // получили вывод в формате stylish
-    const formatStylish = getFormatStylish(treeDiff);
-    return formatStylish;
-  }
-  return null;
+  const resFormatDiff = chooseFormat(treeDiff, format);
+  return resFormatDiff;
 };

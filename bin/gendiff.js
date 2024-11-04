@@ -17,5 +17,7 @@ program
   });
 
 program.parse();
-// gendiff __fixtures__/file1.json __fixtures__/file2.json => stylish
-// gendiff --format plain __fixtures__/file1.json __fixtures__/file2.json => plain
+// gendiff -h
+// gendiff __fixtures__/file1.json __fixtures__/file2.json
+// gendiff --format plain __fixtures__/file1.json __fixtures__/file2.json
+// gendiff --format json __fixtures__/file1.json __fixtures__/file2.json

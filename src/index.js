@@ -22,7 +22,6 @@ const getDiff = (objContentFileOne, objContentFileTwo) => { // разница ф
   const keysUniq = _.sortBy(keysUniqNoSorted); // сортировка по алфавиту
   const keysObjContentFileOne = Object.keys(objContentFileOne); // ключи первого объекта
   const keysObjContentFileTwo = Object.keys(objContentFileTwo); // ключи второго объекта
-
   const treeDifference = keysUniq.map((key) => { // новый массив с объектами со сравненными данными
     // уник ключ встречается в ключах 1 объекта, во втором нет
     if (keysObjContentFileOne.includes(key) && !keysObjContentFileTwo.includes(key)) {

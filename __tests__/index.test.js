@@ -14,6 +14,8 @@ const pathFileResStylish = getFixturePath('resStylish.txt');
 const contentFileResStylish = readFileSync(pathFileResStylish, 'utf-8');
 const pathFileResPlain = getFixturePath('resPlain.txt');
 const contentFileResPlain = readFileSync(pathFileResPlain, 'utf-8');
+const pathFileResJson = getFixturePath('resJson.json');
+const contentFileResJson = readFileSync(pathFileResJson, 'utf-8');
 
 const genDiffResult = genDiff;
 
@@ -28,4 +30,9 @@ test('genDiffResultTrue', () => {
   expect(genDiffResult(pathFileYmlOne, pathFileYmlTwo, 'plain')).toEqual(contentFileResPlain);
   expect(genDiffResult(pathFileJsonOne, pathFileYmlTwo, 'plain')).toEqual(contentFileResPlain);
   expect(genDiffResult(pathFileYmlOne, pathFileJsonTwo, 'plain')).toEqual(contentFileResPlain);
+  // проверка по формату json
+  expect(genDiffResult(pathFileJsonOne, pathFileJsonTwo, 'json')).toEqual(contentFileResJson);
+  expect(genDiffResult(pathFileYmlOne, pathFileYmlTwo, 'json')).toEqual(contentFileResJson);
+  expect(genDiffResult(pathFileJsonOne, pathFileYmlTwo, 'json')).toEqual(contentFileResJson);
+  expect(genDiffResult(pathFileYmlOne, pathFileJsonTwo, 'json')).toEqual(contentFileResJson);
 });

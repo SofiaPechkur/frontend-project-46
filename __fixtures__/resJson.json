@@ -1,0 +1,116 @@
+[
+  {
+    "name": "common",
+    "type": "identicalKeyWithValObject",
+    "children": [
+      {
+        "name": "follow",
+        "type": "addedObjTwo",
+        "value": false
+      },
+      {
+        "name": "setting1",
+        "type": "identicalKeyValStaySame",
+        "value": "Value 1"
+      },
+      {
+        "name": "setting2",
+        "type": "addedObjOne",
+        "value": 200
+      },
+      {
+        "name": "setting3",
+        "type": "identicalKeyValDifferent",
+        "valueObjOne": true,
+        "valueObjTwo": null
+      },
+      {
+        "name": "setting4",
+        "type": "addedObjTwo",
+        "value": "blah blah"
+      },
+      {
+        "name": "setting5",
+        "type": "addedObjTwo",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "name": "setting6",
+        "type": "identicalKeyWithValObject",
+        "children": [
+          {
+            "name": "doge",
+            "type": "identicalKeyWithValObject",
+            "children": [
+              {
+                "name": "wow",
+                "type": "identicalKeyValDifferent",
+                "valueObjOne": "",
+                "valueObjTwo": "so much"
+              }
+            ]
+          },
+          {
+            "name": "key",
+            "type": "identicalKeyValStaySame",
+            "value": "value"
+          },
+          {
+            "name": "ops",
+            "type": "addedObjTwo",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "group1",
+    "type": "identicalKeyWithValObject",
+    "children": [
+      {
+        "name": "baz",
+        "type": "identicalKeyValDifferent",
+        "valueObjOne": "bas",
+        "valueObjTwo": "bars"
+      },
+      {
+        "name": "foo",
+        "type": "identicalKeyValStaySame",
+        "value": "bar"
+      },
+      {
+        "name": "nest",
+        "type": "identicalKeyValDifferent",
+        "valueObjOne": {
+          "key": "value"
+        },
+        "valueObjTwo": "str"
+      }
+    ]
+  },
+  {
+    "name": "group2",
+    "type": "addedObjOne",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "name": "group3",
+    "type": "addedObjTwo",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]

@@ -1,9 +1,8 @@
 // считаем кол-во отступов, смещение по умолчанию 2
 const getQuantityIndent = (depth, displacement = 2) => {
-  const newDepth = depth; // глубина
   const basicQuantityIndent = 4; // базовое кол-во отступов
   // финальное кол-во отступов, в случае если value === объект => displacement = 0
-  const quantityIndent = (newDepth * basicQuantityIndent) - displacement;
+  const quantityIndent = (depth * basicQuantityIndent) - displacement;
   return quantityIndent; // возвращается кол-во отступов
 };
 const getCorrectValue = (value, indent, depth) => { // переделываем значение из объекта в строку
@@ -35,8 +34,9 @@ const getFormatStylish = (treeDiff, depth = 1) => { // получаем нужн
       return `${acc}\n${indent.repeat(getQuantityIndent(depth))}  ${key.name}: ${getCorrectValue(key.value, indent, depth + 1)}`;
     }
     // else if (key.type === 'identicalKeyValDifferent')
-    return `${acc}\n${indent.repeat(getQuantityIndent(depth))}- ${key.name}: ${getCorrectValue(key.valueObjOne, indent, depth + 1)}
-${indent.repeat(getQuantityIndent(depth))}+ ${key.name}: ${getCorrectValue(key.valueObjTwo, indent, depth + 1)}`;
+    const dataObjOne = `${indent.repeat(getQuantityIndent(depth))}- ${key.name}: ${getCorrectValue(key.valueObjOne, indent, depth + 1)}`;
+    const dataObjTwo = `${indent.repeat(getQuantityIndent(depth))}+ ${key.name}: ${getCorrectValue(key.valueObjTwo, indent, depth + 1)}`;
+    return `${acc}\n${dataObjOne}\n${dataObjTwo}`;
   }, '');
   return `{${formatStylish}\n${indent.repeat(getQuantityIndent(depth - 1, 0))}}`;
 };

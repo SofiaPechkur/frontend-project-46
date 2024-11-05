@@ -10,29 +10,36 @@ const pathFileJsonOne = getFixturePath('file1.json');
 const pathFileJsonTwo = getFixturePath('file2.json');
 const pathFileYmlOne = getFixturePath('file1.yml');
 const pathFileYmlTwo = getFixturePath('file2.yml');
-const pathFileResStylish = getFixturePath('resStylish.txt');
-const contentFileResStylish = readFileSync(pathFileResStylish, 'utf-8');
-const pathFileResPlain = getFixturePath('resPlain.txt');
-const contentFileResPlain = readFileSync(pathFileResPlain, 'utf-8');
-const pathFileResJson = getFixturePath('resJson.json');
-const contentFileResJson = readFileSync(pathFileResJson, 'utf-8');
 
 const genDiffResult = genDiff;
 
-test('genDiffResultTrue', () => {
-  // проверка по формату stylish
-  expect(genDiffResult(pathFileJsonOne, pathFileJsonTwo)).toEqual(contentFileResStylish);
-  expect(genDiffResult(pathFileYmlOne, pathFileYmlTwo)).toEqual(contentFileResStylish);
-  expect(genDiffResult(pathFileJsonOne, pathFileYmlTwo)).toEqual(contentFileResStylish);
-  expect(genDiffResult(pathFileYmlOne, pathFileJsonTwo)).toEqual(contentFileResStylish);
-  // проверка по формату plain
-  expect(genDiffResult(pathFileJsonOne, pathFileJsonTwo, 'plain')).toEqual(contentFileResPlain);
-  expect(genDiffResult(pathFileYmlOne, pathFileYmlTwo, 'plain')).toEqual(contentFileResPlain);
-  expect(genDiffResult(pathFileJsonOne, pathFileYmlTwo, 'plain')).toEqual(contentFileResPlain);
-  expect(genDiffResult(pathFileYmlOne, pathFileJsonTwo, 'plain')).toEqual(contentFileResPlain);
-  // проверка по формату json
-  expect(genDiffResult(pathFileJsonOne, pathFileJsonTwo, 'json')).toEqual(contentFileResJson);
-  expect(genDiffResult(pathFileYmlOne, pathFileYmlTwo, 'json')).toEqual(contentFileResJson);
-  expect(genDiffResult(pathFileJsonOne, pathFileYmlTwo, 'json')).toEqual(contentFileResJson);
-  expect(genDiffResult(pathFileYmlOne, pathFileJsonTwo, 'json')).toEqual(contentFileResJson);
+test.each([ // проверка по формату stylish
+  [pathFileJsonOne, pathFileJsonTwo],
+  [pathFileYmlOne, pathFileYmlTwo],
+  [pathFileJsonOne, pathFileYmlTwo],
+  [pathFileYmlOne, pathFileJsonTwo],
+])('stylish', (a, b) => {
+  const pathFileResStylish = getFixturePath('resStylish.txt');
+  const contentFileResStylish = readFileSync(pathFileResStylish, 'utf-8');
+  expect(genDiffResult(a, b)).toBe(contentFileResStylish);
+});
+test.each([ // проверка по формату plain
+  [pathFileJsonOne, pathFileJsonTwo, 'plain'],
+  [pathFileYmlOne, pathFileYmlTwo, 'plain'],
+  [pathFileJsonOne, pathFileYmlTwo, 'plain'],
+  [pathFileYmlOne, pathFileJsonTwo, 'plain'],
+])('plain', (a, b, c) => {
+  const pathFileResPlain = getFixturePath('resPlain.txt');
+  const contentFileResPlain = readFileSync(pathFileResPlain, 'utf-8');
+  expect(genDiffResult(a, b, c)).toBe(contentFileResPlain);
+});
+test.each([ // проверка по формату json
+  [pathFileJsonOne, pathFileJsonTwo, 'json'],
+  [pathFileYmlOne, pathFileYmlTwo, 'json'],
+  [pathFileJsonOne, pathFileYmlTwo, 'json'],
+  [pathFileYmlOne, pathFileJsonTwo, 'json'],
+])('json', (a, b, c) => {
+  const pathFileResJson = getFixturePath('resJson.json');
+  const contentFileResJson = readFileSync(pathFileResJson, 'utf-8');
+  expect(genDiffResult(a, b, c)).toBe(contentFileResJson);
 });

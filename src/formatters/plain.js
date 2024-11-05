@@ -5,7 +5,7 @@ const getType = (value) => { // вывод в зависимости от тип
   if (typeof value === 'string') {
     return `'${value}'`;
   }
-  return value;
+  return `${value}`;
 };
 const getFormatPlain = (treeDiff, depth = 0, ancestry = '') => { // получаем нужный формат вывода
   const formatPlain = treeDiff.reduce((acc, key) => {

@@ -10,7 +10,7 @@ const chooseFormat = (treeDiff, format) => { // вывод результата 
     case 'json':
       return JSON.stringify(treeDiff, null, 2);
     default:
-      throw new Error('error');
+      throw new Error('Error in chooseFormat (stylish, plain, json)');
   }
 };
 export default chooseFormat;

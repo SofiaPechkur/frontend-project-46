@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import path from 'path';
+import { readFileSync } from 'node:fs';
 import { cwd } from 'node:process';
 import chooseFormat from './formatters/index.js';
 import parse from './parse.js';
@@ -10,8 +11,14 @@ const getContentFile = (filepathOriginalOne, filepathOriginalTwo) => {
   // преобразование в абсолют путь
   const filepathResolveOne = path.resolve(pathCwd, filepathOriginalOne);
   const filepathResolveTwo = path.resolve(pathCwd, filepathOriginalTwo);
-  const objContentFileOne = parse(filepathResolveOne);
-  const objContentFileTwo = parse(filepathResolveTwo);
+  // в конст содержимое файла
+  const contentFileOne = readFileSync(filepathResolveOne, 'utf-8');
+  const contentFileTwo = readFileSync(filepathResolveTwo, 'utf-8');
+  // определяет расширение файла без точки
+  const formatFileOne = path.extname(filepathResolveOne).slice(1);
+  const formatFileTwo = path.extname(filepathResolveTwo).slice(1);
+  const objContentFileOne = parse(contentFileOne, formatFileOne);
+  const objContentFileTwo = parse(contentFileTwo, formatFileTwo);
   // получилось два объекта в массиве
   return [objContentFileOne, objContentFileTwo];
 };
@@ -20,18 +27,16 @@ const getDiff = (objContentFileOne, objContentFileTwo) => { // разница ф
   const tempObjWithUniqKeys = { ...objContentFileOne, ...objContentFileTwo };
   const keysUniqNoSorted = Object.keys(tempObjWithUniqKeys); // уникальные ключи
   const keysUniq = _.sortBy(keysUniqNoSorted); // сортировка по алфавиту
-  const keysObjContentFileOne = Object.keys(objContentFileOne); // ключи первого объекта
-  const keysObjContentFileTwo = Object.keys(objContentFileTwo); // ключи второго объекта
   const treeDifference = keysUniq.map((key) => { // новый массив с объектами со сравненными данными
     // уник ключ встречается в ключах 1 объекта, во втором нет
-    if (keysObjContentFileOne.includes(key) && !keysObjContentFileTwo.includes(key)) {
+    if (Object.hasOwn(objContentFileOne, key) && !Object.hasOwn(objContentFileTwo, key)) {
       return {
         name: key,
         type: 'addedObjOne',
         value: objContentFileOne[key],
       };
     } // уник ключ встречается в ключах 2 объекта, в первом нет
-    if (keysObjContentFileTwo.includes(key) && !keysObjContentFileOne.includes(key)) {
+    if (Object.hasOwn(objContentFileTwo, key) && !Object.hasOwn(objContentFileOne, key)) {
       return {
         name: key,
         type: 'addedObjTwo',
